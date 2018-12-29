@@ -52,7 +52,7 @@ for EN_L=0          % Enable automatic segment size to be spikes size
 
         X=[Xsp;Xsp0];
         y=[ones(size(Xsp,1),1); zeros(size(Xsp,1),1) ];
-        save(strcat(data_path,num2str(size(X,1)),'_MEG_Extracted_',suff,'.mat'),'X','y','L_max','EN_L','EN_b','bmin','bmax','suff')
+        save(strcat(data_path,num2str(size(X,1)),'_MEG_Extracted_',suff,'.mat'),'Xsp','Xsp0','X','y','L_max','EN_L','EN_b','bmin','bmax','suff')
 
     end
 end

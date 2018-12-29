@@ -1,4 +1,6 @@
-
+A=magic(4);
+A=A(:,1:2)
+SK_features=sum(A'.^2)'
 
 
 Levels=10

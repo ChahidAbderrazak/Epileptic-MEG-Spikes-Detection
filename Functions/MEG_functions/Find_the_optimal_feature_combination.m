@@ -6,7 +6,7 @@
 % feature_type='Optimal_combinaison_SCSA_features';
 % root_folder='./Feature_Selection/';
 
-function [SCSA_X_op,op_comb,op_comb_name, perform_output,OP_Acc]=Find_the_optimal_feature_combination(data_file,feature_TAG,K, feature_type,type_clf)
+function [SCSA_X_op,op_comb,op_comb_name, perform_output,OP_Acc]=Find_the_optimal_feature_combination(data_file,feature_TAG,K, feature_type,clf)
 global  h filename Normalization root_folder
 
 load(data_file)
@@ -68,14 +68,14 @@ for sz_combinaison=1:Z
 
         %% Run the classifer 
         cnt0=cnt0+1;
-        [accuracy,accuracy_avg,sensitivity_avg,specificity_avg,precision_avg,gmean_avg,f1score_avg]=K_Fold_CrossValidation(X, y, K, type_clf);
+        [accuracy,accuracy_avg,sensitivity_avg,specificity_avg,precision_avg,gmean_avg,f1score_avg]=K_Fold_CrossValidation(X, y, K, clf);
 
 
         V_com(Used_combinaison)=1; Hex_com(cnt0)=bi2de(V_com);
         Output_results(cnt0,:)=[h, Normalization,Z, Hex_com(cnt0),size(X,2), accuracy_avg,sensitivity_avg,specificity_avg,precision_avg,gmean_avg,f1score_avg];
         Output_Combinaisons{cnt0}=Combine_features_names(2:end);
         Dataset_k{cnt0}=filename;
-        Classifier{cnt0}=type_clf;
+        Classifier{cnt0}=clf;
 
 
         if Acc_max<accuracy_avg || (Acc_max==accuracy_avg & size(X,2)<size(SCSA_X_op,2))
@@ -117,7 +117,7 @@ perform_output.Classifier=Classifier';
 op_comb=perform_output(Idx,:);
 op_comb_name=Output_Combinaisons(Idx);
 
-OP_Acc=perform_output_Mtr(Idx,2:3)';
+OP_Acc=max(perform_output.Accuracy);
 
 %% save to Excel file
 % sheetnames=strcat('combinaison_',num2str(cnt0));

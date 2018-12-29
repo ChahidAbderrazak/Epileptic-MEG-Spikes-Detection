@@ -29,12 +29,15 @@ global Normalization y h filename  root_folder
 Classification_Parameters
 
  %% Feature generation  & Classification
-    % Raw Data
-        Raw_Data_classification;
-        
-    % SCSA
-        SCSA_classification;
- 
+%     % Raw Data
+%         Raw_Data_classification;
+%         
+%     % SCSA
+%         SCSA_classification;
+%  
+      
+    % PWM
+        PWM_Classification;
  
  
  

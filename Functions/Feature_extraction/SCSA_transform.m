@@ -45,6 +45,12 @@ for i=1:N
     
 end
 
+
+Eigen_Spectrum( :, all(~Eigen_Spectrum,1) ) = [];
+
+
+
+
 d=1;
 
 function [h, yscsa,Nh,Neg_lamda,psinnor]= SCSA1D_vector(y,fs,h,gm)
