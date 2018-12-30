@@ -36,6 +36,8 @@ for num_fold = 1:C.NumTestSets
     X_test_levels= mapping_levels(X_test, Level_intervals, Levels);
     fPWM_test= Generate_PWM_features(X_test_levels, PWM_P, PWM_N);
 
+    %% plot PWM features
+%     plot_PWM_features(fPWM_train,fPWM_test,Np)
 
     %% Train and test the model
     [classifier] = trainClassifier(fPWM_train,y_train, 'logisticRegression');   %train classifier
@@ -49,7 +51,7 @@ for num_fold = 1:C.NumTestSets
             
             
     acc1(num_fold)= 1-result1{1};  % rank accuracy
-    global scores
+%     global scores
 %     outcome(num_fold,:)=[y_test  acc1(num_fold) scores];
 
 end
@@ -64,6 +66,23 @@ end
 
 %% Funtions
 
+
+function plot_PWM_features(fPWM_train,fPWM_test,Np)
+Np=124;
+% close all
+figure(125);
+scatter(fPWM_train(1:Np,1), fPWM_train(1:Np,2),'r');  hold on
+scatter(fPWM_train(Np+1:end,1) , fPWM_train(Np+1:end,2),'k');  hold on
+scatter(fPWM_test(1), fPWM_test(2),'b', 'LineWidth',12 );  hold off
+legend('Negative Class Training ', 'Positive Class Training ', 'Negative sample tested ')
+
+title('LOO features using PWM projection of the samples')
+xlabel('fPWM_1')
+ylabel('fPWM_2')
+
+set(gca,'fontsize',16)
+
+end
 % Quantization
 function X=mapping_levels(X,Level_intervals, Levels)
     for i=1:size(X,1)

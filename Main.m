@@ -34,7 +34,7 @@ Classification_Parameters
 %         
 %     % SCSA
 %         SCSA_classification;
-%  
+ 
       
     % PWM
         PWM_Classification;

@@ -1,4 +1,5 @@
 function [X,X0,L_max,L_min]=Extract_the_spikes_dataset_Threshold(EN_L, L_max, Frame_Step, EN_b,bmin,bmax,t,Y,Y0,Spike_stops,Spike_startes,Time_spike)
+global  Electrode_list
 
 if EN_L==1; L_max=0;end
 L_min=size(Y,2);
@@ -46,7 +47,7 @@ for Spik2study=1:size(Spike_stops,1)
         X_New=[];
         X0_New=[];   
             
-        for Electrode=2:4%1:size(Y,1)
+        for Electrode=Electrode_list 
             Xn=Y(Electrode,spiky_area);
             Xn0=Y0(Electrode,spiky_area);
             

@@ -16,11 +16,14 @@
 %% ###########################################################################
 % clear all;  close all ; 
 format shortG;  addpath ./Functions ;Include_function ;log_html_file
-global  t     suff
+global  t  suff  Electrode_list 
+
+Electrode_list=2:4 ;                   % the electrods to be used
+
 
 %% The obtained results will be saved in:
 data_path='./Input_data/Extracted_spikes_data/';
-meta='Load the spikes event in one windows- without notmalization';
+meta='Load the spikes event in one frame with/ without notmalization';
 
 %% #########################    Load data   ################################
 ext='./Input_data/*.mat';
@@ -58,6 +61,13 @@ for EN_L=0          % Enable automatic segment size to be spikes size
 end
 
 close all
-figure;plot(Xsp','r'); hold on;% ylim([-1.5e-10 2E-10])
- plot(Xsp0','g'); ylim([-1.5e-10 2E-10])
+figure;plot(Xsp','r', 'LineWidth',2 ); hold on;% ylim([-1.5e-10 2E-10])
+ plot(Xsp0','g', 'LineWidth',1 );  hold off
+legend('Positive  Class  ', 'Negative Class  ')
+
+title(strcat('Dataset samples from Electrods: 2,3,4  with L=', num2str(L_max), ', and Frame Step=', num2str(Frame_Step) ))
+xlabel('samples')
+ylabel('Intensity')
+% ylim([-1.5e-10 2E-10])
+set(gca,'fontsize',16)
 
