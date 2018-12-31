@@ -1,15 +1,13 @@
 clearvars Output_results  Accuracy_av perform_output Accuracy_all Classifier
 global Levels Level_intervals
 
-
-
 %% Classifier 
 clf='logisticRegression'
 feature_type='PWM_';
 
 %% List of parameteres
-    list_M=2*[4:2:8]; N_M=max(size(list_M));
-    list_k=[ 0.8 0.85  1.15 1.2]; N_k=max(size(list_k));k=0;
+    list_M=2*[6:9]; N_M=max(size(list_M));
+    list_k=[ 0.8:0.2:1.2]; N_k=max(size(list_k));k=0;
 
 %% Get the statistical properties of the data
     [Xsp,Xsp0]=Split_classes_samples(X,y);
@@ -24,6 +22,7 @@ feature_type='PWM_';
 
 %% Script Starts
     cntm=1;Acc_op=0;cnt_inc=0;
+    
 for M= list_M                % Number of levels
 
     cnt = 1;
@@ -80,10 +79,7 @@ end
     pwm_param=strcat('_sigma1_k',num2str(N_k),'_M_',num2str(N_M));
     feature_TAG=pwm_param;        % features TAG
     
-    save(strcat('./Classification_results/',feature_type,pwm_param,suff,'_norm',num2str(Normalization),'_Acc',num2str(Acc_op),'.mat'),'pwm_param','feature_TAG','perform_output', '*_all','list_*','*pd','mu0','sigma0',...
-                                                                          'PWM_op_results','Xs*','X','y','L_max','EN_L','EN_b','bmin','bmax','suff','filename')                                                       
-    
-                                                                      
-                                                                      
+    save(strcat('./Classification_results/',feature_type,noisy_file,pwm_param,suff,'_norm',num2str(Normalization),'_Acc',num2str(Acc_op),'.mat'),'pwm_param','feature_TAG','perform_output', 'noisy_file','*_all','list_*','*pd','mu0','sigma0',...
+                                                                          'PWM_op_results','Xs*','X','y','L_max','EN_L','EN_b','bmin','bmax','suff','filename')                                                                                                                    
 fprintf('\n################  The End ################\n\n')
 

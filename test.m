@@ -28,4 +28,11 @@ Levels=10
 % % title(strcat('Samples values distribution for N=',num2str(N),' , data:',filename2))
 % %  
 % % 
+% % % % Run the K-Cross Validation
+% % % % Raw data
+% % % [accuracy,Avg_accuracy, sensitivity, specificity, precision, gmean, f1score0]=K_Fold_CrossValidation(X, y, K, type_clf);
+% % % 
+% % % % PWM features
+% % % [accuracy,Avg_accuracy, sensitivity, specificity, precision, gmean, f1score0]=K_Fold_CrossValidation_for_PWM(X, y, K, type_clf);
+% % % 
 

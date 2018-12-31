@@ -19,9 +19,9 @@ global Normalization y h filename  root_folder
      Extracted_MEG_Samples
 
 %% For test purpose, use small data set by rndom sampling
-    X=[Xsp;Xsp0];
-    y=[ones(size(Xsp,1),1); zeros(size(Xsp,1),1) ];
-    % random_sampling_X
+%     X=[Xsp;Xsp0];
+%     y=[ones(size(Xsp,1),1); zeros(size(Xsp,1),1) ];
+%      random_sampling_X
     
  
    

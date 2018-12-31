@@ -15,59 +15,64 @@
 
 %% ###########################################################################
 % clear all;  close all ; 
-format shortG;  addpath ./Functions ;Include_function ;log_html_file
-global  t  suff  Electrode_list 
+format shortG;  addpath ./Functions ;Include_function ;%log_html_file
+global  t  suff  Electrode_list  Conf_Elctr Bi_Elctr
 
-Electrode_list=2:4 ;                   % the electrods to be used
+%% The input parameters
+Electrode_list=1:26;                   % the list of electrods to be used
+L_max=100;                              % Spikes frame size
+Frame_Step=2;                         % sliding  frame step size
 
+% Thresholds
+bmin=-2.49e-11;bmax=2.49e-11;
 
-%% The obtained results will be saved in:
-data_path='./Input_data/Extracted_spikes_data/';
-meta='Load the spikes event in one frame with/ without notmalization';
 
 %% #########################    Load data   ################################
-ext='./Input_data/*.mat';
+ext='./Input_data/MEG_Epy_KSU/MEG_signals/*.mat';
 [filename rep]= uigetfile({ext}, 'File selector')  ;
 chemin = fullfile(rep, ext);   list = dir(chemin);  
 cname=strcat(rep, filename);   load(cname); 
 
+%% The obtained results will be saved in:
+meta= strcat('Load the spikes event in ', {' '},noisy_file,' data using: frame size =',num2str(L_max),' with step =',num2str(Frame_Step),' in Electrodes [',num2str(Electrode_list),']');
+
+data_path=strcat('./Input_data/Extracted_spikes_data/',noisy_file,'/');
+if exist(data_path)~=7; mkdir(data_path);end 
+
 %%  Take  a small part from the signal to be studied
 % cut_slot_from_signals;
+Bi_Elctr(Electrode_list)=1; Conf_Elctr=bi2de(Bi_Elctr);
 
 %% Extract the region where we have spikes
 for EN_L=0          % Enable automatic segment size to be spikes size
     for EN_b=0      % Enable Thresholding S<bmin and S> bmax will be considered as spikes condidate
            
-        clearvars suff Xsp Xsp0 X y L_max
-
-        % Spikes segments
-        L_max=100;
-        Frame_Step=50;
-        
-        % Thresholds
-        bmin=-2.49e-11;bmax=2.49e-11;
+        clearvars  suff Xsp Xsp0 X y
     
         % Extract the spikes
         [Xsp,Xsp0,L_max,L_min]=Extract_the_spikes_dataset_Threshold(EN_L, L_max,Frame_Step, EN_b,bmin,bmax,t,Y,Y0,Spike_stops,Spike_startes,Time_spike);
        
-        suff=strcat('_AutoL',num2str(EN_L),'_L',num2str(L_max),'_FrStep',num2str(Frame_Step),'_Th',num2str(EN_b));
+        suff=strcat('_Electrods',num2str(Conf_Elctr),'_AutoL',num2str(EN_L),'_L',num2str(L_max),'_FrStep',num2str(Frame_Step),'_Th',num2str(EN_b));
 
 
         X=[Xsp;Xsp0];
         y=[ones(size(Xsp,1),1); zeros(size(Xsp,1),1) ];
-        save(strcat(data_path,num2str(size(X,1)),'_MEG_Extracted_',suff,'.mat'),'Xsp','Xsp0','X','y','L_max','EN_L','EN_b','bmin','bmax','suff')
+        save(strcat(data_path,num2str(size(X,1)),'_',noisy_file,suff,'.mat'),'Conf_Elctr','Electrode_list','Frame_Step','Xsp','Xsp0','X','y','L_max','EN_L','EN_b','bmin','bmax','suff')
 
     end
 end
 
 close all
-figure;plot(Xsp','r', 'LineWidth',2 ); hold on;% ylim([-1.5e-10 2E-10])
- plot(Xsp0','g', 'LineWidth',1 );  hold off
-legend('Positive  Class  ', 'Negative Class  ')
-
-title(strcat('Dataset samples from Electrods: 2,3,4  with L=', num2str(L_max), ', and Frame Step=', num2str(Frame_Step) ))
-xlabel('samples')
-ylabel('Intensity')
-% ylim([-1.5e-10 2E-10])
-set(gca,'fontsize',16)
-
+figr=43;figure(figr);
+    plot(Xsp','r', 'LineWidth',2 ); hold on;% ylim([-1.5e-10 2E-10])
+    plot(Xsp0','g', 'LineWidth',1 );  hold off
+    legend('Positive  Class  ')%, 'Negative Class  ')
+    title(strcat(noisy_file, {' '}, 'Electrods: ',num2str(Electrode_list),', L=', num2str(L_max), ',Step=', num2str(Frame_Step) ))
+    xlabel('samples')
+    ylabel('Intensity')
+    % ylim([-1.5e-10 2E-10])
+    set(gca,'fontsize',16)
+    
+    %% save the figure of te used data
+    name=strcat(num2str(size(X,1)),'_',noisy_file,suff);
+    save_figure(data_path,figr,name) 

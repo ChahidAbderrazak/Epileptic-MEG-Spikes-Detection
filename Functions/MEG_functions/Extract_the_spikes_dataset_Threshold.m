@@ -40,7 +40,7 @@ for Spik2study=1:size(Spike_stops,1)
 
 
     %% Sliding frame of size <Frame_Step>
-    for Sp=Sp0:floor(L_max/Frame_Step):Sp1-L_max+1
+    for Sp=Sp0-L_max+2:Frame_Step:Sp1+L_max-2
 
         spiky_area=Sp:Sp+L_max-1;
  
