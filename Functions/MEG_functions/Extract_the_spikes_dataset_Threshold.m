@@ -28,7 +28,7 @@ end
 
 
 cnt=1;
-
+L_centroide=0;%floor(L_max/2);
     
 for Spik2study=1:size(Spike_stops,1)
 
@@ -38,9 +38,9 @@ for Spik2study=1:size(Spike_stops,1)
     Sp0 = max(find(t <=Spike_startes_i)); % initial index of the spike
     Sp1 = max(find(t <=Spike_stops_i));   % final index of the spike
 
-
+sz_spike=Sp1-Sp0
     %% Sliding frame of size <Frame_Step>
-    for Sp=Sp0-L_max+2:Frame_Step:Sp1+L_max-2
+    for Sp=Sp0:Frame_Step:Sp1-L_max+1
 
         spiky_area=Sp:Sp+L_max-1;
  
@@ -79,8 +79,7 @@ for Spik2study=1:size(Spike_stops,1)
         cnt=cnt+1;           
         
         clearvars X_New X0_New
-
-end
+    end
 
 
     

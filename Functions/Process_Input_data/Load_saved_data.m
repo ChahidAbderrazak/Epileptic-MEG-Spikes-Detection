@@ -1,6 +1,9 @@
-%% Step Log
-% fprintf(fid_display, colorizestring('red', ' <br/>  <font size="+1.2"> The Epileptic spikes detection Project 2018'));web(filename_display);
-% fprintf(fid_display, colorizestring('blue', ' <br/>  <font size="+1"> Loading Input MEG Data'));web(filename_display);
+%% #########################   Display   ################################
+fprintf('########################################################################\n');
+fprintf('|          Spikes Detection for Epyliptic sigal Project 2018            \n');
+fprintf('########################################################################\n\n');
+
+fprintf('\n --> Loading Input MEG Data ');
 
 %% #########################    Load data   ################################
 ext = './Input_data/Extracted_spikes_data/*.mat';  

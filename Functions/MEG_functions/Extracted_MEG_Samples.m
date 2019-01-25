@@ -16,16 +16,25 @@
 %% ###########################################################################
 % clear all;  close all ; 
 format shortG;  addpath ./Functions ;Include_function ;%log_html_file
-global  t  suff  Electrode_list  Conf_Elctr Bi_Elctr
+clearvars Conf_Elctr Bi_Elctr
+global  t  suff  Electrode_list  ;
 
 %% The input parameters
-Electrode_list=1:26;                   % the list of electrods to be used
+Electrode_list=1:26;%2:4;%                   % the list of electrods to be used
 L_max=100;                              % Spikes frame size
 Frame_Step=2;                         % sliding  frame step size
-
 % Thresholds
 bmin=-2.49e-11;bmax=2.49e-11;
 
+
+%% #########################   Display   ################################
+fprintf('########################################################################\n');
+fprintf('|          Spikes Detection for Epileptic signal Project 2018            \n');
+fprintf('########################################################################\n\n');
+
+fprintf('\n --> Extract  classification samples from input MEG Data: ');
+d_data0=string(strcat('- Sampling:  L=',num2str(L_max),', Frame Step=',num2str(Frame_Step)));
+fprintf(' \n %s\n ',d_data0);
 
 %% #########################    Load data   ################################
 ext='./Input_data/MEG_Epy_KSU/MEG_signals/*.mat';
@@ -57,7 +66,8 @@ for EN_L=0          % Enable automatic segment size to be spikes size
 
         X=[Xsp;Xsp0];
         y=[ones(size(Xsp,1),1); zeros(size(Xsp,1),1) ];
-        save(strcat(data_path,num2str(size(X,1)),'_',noisy_file,suff,'.mat'),'Conf_Elctr','Electrode_list','Frame_Step','Xsp','Xsp0','X','y','L_max','EN_L','EN_b','bmin','bmax','suff')
+        save(strcat(data_path,num2str(size(X,1)),'_',num2str(size(X,2)),'_',noisy_file,suff,'.mat'),'Conf_Elctr','Electrode_list','Frame_Step','Xsp','Xsp0','X','y','L_max','EN_L','EN_b','bmin','bmax','suff',...
+                                                                                                    'fs','Y','Y0','nb_slice','t','noisy_file','original_file','SNR_dB','Electrode','SE','Time_spike', 'Spike_startes','Spike_stops')
 
     end
 end
@@ -74,5 +84,6 @@ figr=43;figure(figr);
     set(gca,'fontsize',16)
     
     %% save the figure of te used data
-    name=strcat(num2str(size(X,1)),'_',noisy_file,suff);
+    name=strcat(num2str(size(X,1)),'_','_',num2str(size(X,2)),'_',noisy_file,suff);
     save_figure(data_path,figr,name) 
+close all
