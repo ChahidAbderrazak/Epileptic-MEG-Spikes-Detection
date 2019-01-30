@@ -14,7 +14,7 @@
 clear all; close all; addpath ./Functions
 %% Load the Healthy MEG
 fs=1000;                            % the sampling frequency
-L_max=40;                              % Spikes frame size. It will change if the it si bigger than the shortest spike duration
+L_max=70;                              % Spikes frame size. It will change if the it si bigger than the shortest spike duration
 Frame_Step=2;                          % sliding  frame step size
 Plot_electrods = 1;                 % If you want to plot all the electrods amples seperatelly Plot_electrods=1 else Plot_electrods=0
 Results_path='../Extracted_separate_subj';
@@ -43,7 +43,7 @@ suff=strcat('allCHs','_AutoL','_L',num2str(L_max),'_FrStep',num2str(Frame_Step))
 Xp=[];Xn=[];yp=[];yn=[];X=[];y=[];
 Patient_Spk=[];SE_Spk=[];Patient_Hlt=[];SE_Hlt=[];   ID_Patient=[];ID_SE=[];
 
-for patient_k=1:7%[1:8 11:15 17]%12:min(size(List_mat_Hlt,2),size(List_mat_Spk,2))
+for patient_k=9:11%1:7%[1:8 11:15 17]%12:min(size(List_mat_Hlt,2),size(List_mat_Spk,2))
     
     subj= patient_k;  
 %     clearvars Xp Xn yp yn X y  Patient_Spk SE_Spk Patient_Hlt SE_Hlt    ID_Patient ID_SE 
@@ -153,7 +153,7 @@ figr=43;figure(figr);
     set(gca,'fontsize',16)
     
     %% save the figure of te used data
-    save_figure(path_record,figr,name_record) 
+%     save_figure(path_record,figr,name_record) 
 % close all
 
 %% Save the classification data

@@ -17,8 +17,9 @@
 
 %% ###########################################################################
 %% For test purpose, use small data set by rndom sampling
-%     X=[Xsp;Xsp0];
-%     y=[ones(size(Xsp,1),1); zeros(size(Xsp,1),1) ];
+Nn=size(Xn,1);  Np=size(Xp,1);  Ndata=min(Nn,Np);
+X=[Xp(1:Ndata,:);Xn(1:Ndata,:)];
+y=[yp(1:Ndata,:);yn(1:Ndata,:) ];
 
 % X0=X;
 

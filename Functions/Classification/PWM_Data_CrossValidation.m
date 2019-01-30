@@ -88,3 +88,25 @@ end
 
 
 
+function PWM_letters()
+    N_levels=size(Levels,2);
+    % Assign to each level a letter
+    Seq_letter=char([65:90 97:122  char(194:194+N_levels-52) ]); N_letters=size(Seq_letter,2); %   or Seq_letter='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'    
+    
+    for lv=1:N_levels
+    Levels_ABC(lv)=Seq_letter(lv)
+    
+    end
+    
+    
+    %% Convert seignal to levels
+    Xp= mapping_levels(Xp,Level_intervals, Levels_ABC);
+    Xn= mapping_levels(Xn,Level_intervals, Levels_ABC);
+    %% Build the PWM matrices
+    PWM_P = Generate_PWM_matrix(Xp, Levels_ABC);
+    PWM_N = Generate_PWM_matrix(Xn, Levels_ABC);   
+    
+    
+end
+
+

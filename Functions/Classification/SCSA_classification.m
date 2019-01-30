@@ -44,7 +44,7 @@ if exist(root_folder)~=7; mkdir(root_folder);end
  
 cnt=1;
 Acc_op=0;
-for h=900%[0.1:0.25:1 1.5:2:10 10:10:100 200:100:1000]% max(max(X))*0.01*[2 3 5 10 5 20]%[0.5:0.5:5] % [2:0.2:5]%1%2.13%
+for h=100:10:1000%[0.1:0.25:1 1.5:2:10 10:10:100 200:100:1000]% max(max(X))*0.01*[2 3 5 10 5 20]%[0.5:0.5:5] % [2:0.2:5]%1%2.13%
 
     %% Find the optimal combination of the features  SCSA  
     [F_SCSA_h1, S_SCSA_h1, B_SCSA_h1, P_SCSA_h1,AF_SCSA_h1,SFP_SCSA_h1,SK_features_h1,INVK_features_h1,Nh_all]=SCSA_Transform_features(X,y,h,gm,fs);
@@ -54,7 +54,8 @@ for h=900%[0.1:0.25:1 1.5:2:10 10:10:100 200:100:1000]% max(max(X))*0.01*[2 3 5 
     data_file=strcat(root_folder,'/SCSA_features.mat');
 
 %     save(data_file,'F_SCSA_h1', 'S_SCSA_h1', 'B_SCSA_h1', 'P_SCSA_h1', 'AF_SCSA_h1','SFP_SCSA_h1','SK_features_h1','Nh_all','y');
-    save(data_file,'S_SCSA_h1', 'B_SCSA_h1','SK_features_h1','Nh_all','INVK_features_h1','y');%'AF_SCSA_h1'
+%     save(data_file,'S_SCSA_h1', 'B_SCSA_h1','SK_features_h1','Nh_all','INVK_features_h1','y');%'AF_SCSA_h1'
+    save(data_file,'S_SCSA_h1', 'B_SCSA_h1','INVK_features_h1','Nh_all','y');
 
     %% Test all possible conbinaisons of SCSA features and get the optimal combination
     [SCSA_X, op_comb, op_comb_name, perform_output,Acc]=Find_the_optimal_feature_combination(data_file,feature_TAG,K,CV_type,type_clf);

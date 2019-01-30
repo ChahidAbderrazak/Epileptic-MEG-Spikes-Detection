@@ -19,9 +19,9 @@ global y h filename  root_folder
 % noisy_file=Fuse_strings(unique(noisy_file));
 
 %% Cross Validation parameters
-global Normalization
+global Normalization feature_type
 K=5;
-type_clf= 'LR';%'SVM';% 
+type_clf= 'SVM';%'LR';% 
 CV_type='KFold';%  'LOO';%                                   strcat(num2str(K),'-Folds_CV');%   
 
 
@@ -36,27 +36,30 @@ for Normalization=0%0:1;
     %% Feature generation  & Classification
         Classification_Parameters
         
-%% ###  Raw Data-based Classification
-    tic
-        Raw_Data_classification;
-    Time_raw=toc                   
+% %% ###  Raw Data-based Classification
+%     tic
+%         Raw_Data_classification;
+%     Time_raw=toc                   
 
-%% ### PWM-based Classification
-    list_M=2*[2:5];
-%     list_k=[0.05:0.05:0.5]; 
-    
-    
+% %% ### PWM-based Classification
+%     list_M=2*[4];
+% %     list_M=2*[12:15];
+% %     list_k=[0.05:0.05:0.5]; 
+% 
 %    %% PWM-based features
 %     tic
 %         PWM2_Classification;
 %     Time_PWM2=toc
 
-    %% PWM8-based features
-    tic
-        PWM8_Classification;
-    Time_PWM8=toc
+%     %% PWM8-based features
+%     
+%    list_M=2*[5];
+% 
+%     tic
+%         PWM8_Classification;
+%     Time_PWM8=toc
 
-%% ###  SCSA-based Classification
+% ###  SCSA-based Classification
     tic
         SCSA_classification;
     Time_SCSA=toc                   

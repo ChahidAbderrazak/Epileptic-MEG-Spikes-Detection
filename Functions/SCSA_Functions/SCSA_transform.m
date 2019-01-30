@@ -28,7 +28,7 @@ function [h,Ys,Nh,Eigen_Spectrum, ProbaDNA,Sum_prod_basis]= SCSA_transform(Y,h0,
 [N M]=size(Y);
 stop=0;
 Eigen_Spectrum=zeros([N M]);
-for i=1:N
+parfor i=1:N
     y=Y(i,:);
     [h1, yscsa,Nh0,Eigen_Spectrum0, psinnor]= SCSA1D_vector(y, fs,h0,gm);
 %     figure; plot(y,'r'); hold on ; plot(yscsa,'b'); hold off ; 
@@ -40,8 +40,9 @@ for i=1:N
     I=Eigen_Spectrum0*0+1;
     ProbaDNA(i,:)=I'*Proba;
     Eigen_Spectrum00=Eigen_Spectrum0(1:Nh0)';
-    Eigen_Spectrum(i,1:Nh0)=[Eigen_Spectrum00];
-    
+%     Eigen_Spectrum(i,1:Nh0)=[Eigen_Spectrum00];
+     Eigen_Spectrum(i,:)=Eigen_Spectrum00;
+
     
 end
 
@@ -80,7 +81,8 @@ ind = find(All_lamda<0);
 
 
 %  negative eigenvalues
-Neg_lamda = All_lamda(ind);
+Neg_lamda=0*y';
+Neg_lamda(ind) = All_lamda(ind);
 kappa = diag((abs(Neg_lamda)).^gm); 
 Nh = size(kappa,1); %%#ok<NASGU> % number of negative eigenvalues
 
@@ -89,7 +91,9 @@ psinnor=0*y;
 if Nh~=0
     
 % Associated eigenfunction and normalization
-psin = psi(:,ind(:,1)); % The associated eigenfunction of the negarive eigenvalues
+
+% psin = psi(:,ind(:,1)); % The associated eigenfunction of the negarive eigenvalues
+psin=psi;
 I = simp(psin.^2,fs); % Normalization of the eigenfunction 
 psinnor = psin./sqrt(I);  % The L^2 normalized eigenfunction 
 

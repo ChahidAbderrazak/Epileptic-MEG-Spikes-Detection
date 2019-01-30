@@ -45,7 +45,7 @@ for num_fold = 1:C.NumTestSets
     %% Get the positive and negative training samples to build PWM matrices
     Xp=X_train(y_train==1,:);   Np=size(Xp, 1);
     Xn=X_train(y_train==0,:);   Nn=size(Xn, 1);
-    if abs(Np-Nn)>1
+    if abs(Np-Nn)>2
         fprintf('Non balanced testing data\n\n')
         CV_Status=No_blanced; 
 
@@ -61,7 +61,6 @@ for num_fold = 1:C.NumTestSets
 %     fPWM_test = Generate_PWM8_features(Seq_test,  PWMp_Mer1, PWMn_Mer1);
       
     %% Build the PWM matrices   Mers1 Mer2
-  
    [PWMp_Mer1,PWMn_Mer1, PWMp_Mer2,PWMn_Mer2]= Generate_PWM8_matrix(Seq_train,y_train);
     fPWM_train= Generate_PWM8_features(Seq_train, PWMp_Mer1, PWMn_Mer1,PWMp_Mer2,PWMn_Mer2);       
     fPWM_test = Generate_PWM8_features(Seq_test,  PWMp_Mer1, PWMn_Mer1,PWMp_Mer2,PWMn_Mer2);
@@ -89,6 +88,8 @@ for num_fold = 1:C.NumTestSets
 
         [Mdl,Accuracy(num_fold),sensitivity(num_fold),specificity(num_fold),precision(num_fold),gmean(num_fold),f1score(num_fold),AUC(num_fold),ytrue,yfit,score]...
         =Classify_Data(type_clf, fPWM_train, y_train, fPWM_test, y_test);
+    
+    Mdl_SVM_mPWM=Mdl;
     
 end
 
@@ -204,3 +205,33 @@ global Levels
     d=1;
     
 end
+
+function PWM_letters()
+[ X_1Mer,name_1Mer] = Extract_Miers1(X,Levels); 
+[ X_2Mer,name_1Mer] = Extract_Miers2(X,Levels); 
+
+ fPWM1 = Apply_General_PWM_feature_generator(X_1Mer, PWM_P, PWM_N); 
+ fPWM2 = Apply_General_PWM_feature_generator(X_2Mer, PWMp_2Mer,PWMn_2Mer);
+ fmPWM=[fPWM1 fPWM2];
+
+        
+    fPWM_train= Generate_PWM8_features(Seq_train, PWMp_Mer1, PWMn_Mer1,PWMp_Mer2,PWMn_Mer2);       
+
+    N_levels=size(Levels,2);
+    % Assign to each level a letter
+    Seq_letter=char([65:90 97:122  char(194:194+N_levels-52) ]); N_letters=size(Seq_letter,2); %   or Seq_letter='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'    
+    
+    for lv=1:N_levels
+    Levels_ABC(lv)=Seq_letter(lv)
+    
+    end
+    
+    
+    %% Convert seignal to levels
+    Xp= mapping_levels(Xp,Level_intervals, Levels_ABC);
+    Xn= mapping_levels(Xn,Level_intervals, Levels_ABC);
+    %% Build the PWM matrices
+    PWM_P = Generate_PWM_matrix(Xp, Levels_ABC);
+    PWM_N = Generate_PWM_matrix(Xn, Levels_ABC);   
+end  
+    

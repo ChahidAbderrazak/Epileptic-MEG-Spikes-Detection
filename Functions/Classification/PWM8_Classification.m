@@ -12,12 +12,12 @@ clearvars Output_results  Accuracy_av perform_output Accuracy_all Classifier
 global Levels Level_intervals
 
 %% Classifier 
-feature_type='PWM8_';
+feature_type='mPWM_';
 
 %% List of parameteres
 %     list_M=2*[2:4];
 %     list_k=[0.1:0.2:1.2]; 
-    N_M=max(size(list_M));N_k=max(size(list_k));k=0;
+%     N_M=max(size(list_M));N_k=max(size(list_k));k=0;
 
     
 %% #########################   Display   ################################
@@ -43,7 +43,8 @@ fprintf(' %s\n ',d_data0);
 for M= list_M                % Number of levels
 
     cnt = 1;
-    list_k=1.5/M*[1 1.5];
+    list_k=1.5/M;
+    N_M=max(size(list_M));N_k=max(size(list_k)); 
 
     for k=list_k
 

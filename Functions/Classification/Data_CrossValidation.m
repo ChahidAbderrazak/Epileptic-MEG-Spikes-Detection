@@ -38,7 +38,7 @@ for num_fold = 1:C.NumTestSets
     Xp=X_train(y_train==1,:);   Np=size(Xp, 1);
     Xn=X_train(y_train==0,:);   Nn=size(Xn, 1); 
     
-        if abs(Np-Nn)>1
+        if abs(Np-Nn)>2
             fprintf('Non balanced testing data\n\n')
             CV_Status=No_blanced; 
 
@@ -46,6 +46,8 @@ for num_fold = 1:C.NumTestSets
 
         [Mdl,Accuracy(num_fold),sensitivity(num_fold),specificity(num_fold),precision(num_fold),gmean(num_fold),f1score(num_fold),AUC(num_fold),ytrue,yfit]=Classify_Data(type_clf, X_train, y_train, X_test, y_test);
  
+        
+        pause(0.3);
 end
  
 Avg_Accuracy = sum(Accuracy)/C.NumTestSets;

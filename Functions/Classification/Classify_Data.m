@@ -21,8 +21,11 @@ end
 
 
 function [Mdl,accuracy0,sensitivity0,specificity0,precision0,gmean0,f1score0,AUC,ytrue,yfit,score]=LR_classifier(X_train, y_train, X_test, y_test)
-    Combine_TR=[X_train, y_train];
-    Combine_TS=[X_test, y_test];
+global feature_type
+    
+
+Combine_TR=[X_train, y_train];
+Combine_TS=[X_test, y_test];
 
 % %%% ####################################### 
 [M,N]=size(Combine_TR);
@@ -54,17 +57,18 @@ ytrue=Combine_TS(:,end);
 %% Compute the ROC curve
 [X,Y,T,AUC] = perfcurve(y_test ,score,1);
 % Plot the ROC curve.
-figure(201);
+figure;
 plot(X,Y)
 xlabel('False positive rate') 
 ylabel('True positive rate')
 title('ROC for Classification by Logistic Regression')
-legend(strcat('AUC=',num2str(AUC)))
+legend(strcat(feature_type(1:end-1), ', AUC=',num2str(AUC),' - LR'))
 set(gca,'fontsize',16)
 grid on
 
 
 function [CompactSVMModel,accuracy0,sensitivity0,specificity0,precision0,gmean0,f1score0,AUC,y_test,yfit,score]= SVM_classifier(X_train, y_train, X_test, y_test)
+global feature_type
 CVSVMModel = fitcsvm(X_train,y_train,'Holdout',0.1);
 CompactSVMModel = CVSVMModel.Trained{1}; % Extract trained, compact classifier
 [yfit,scores] = predict(CompactSVMModel,X_test);
@@ -74,12 +78,12 @@ CompactSVMModel = CVSVMModel.Trained{1}; % Extract trained, compact classifier
 score=scores(:,2);
 [X,Y,T,AUC] = perfcurve(y_test ,score,1);
 % Plot the ROC curve.
-figure(201);
+figure;
 plot(X,Y)
 xlabel('False positive rate') 
 ylabel('True positive rate')
 title('ROC for Classification by SVM')
-legend(strcat('AUC=',num2str(AUC)))
+legend(strcat(feature_type(1:end-1), ', AUC=',num2str(AUC),' - SVM'))
 set(gca,'fontsize',16)
 grid on
 
