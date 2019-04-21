@@ -11,7 +11,7 @@
 %  
 %% ###########################################################################
 
-clear all; close all; addpath ./Functions
+% clear all; close all; addpath ./Functions
 %% Load the Healthy MEG
 fs=1000;                            % the sampling frequency
 L_max=100;                              % Spikes frame size. It will change if the it si bigger than the shortest spike duration

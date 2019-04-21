@@ -23,23 +23,26 @@
 % SC_h : The decomposed Matrix of the Schrödinger problem
 
 
-function [h,Ys,Nh,Eigen_Spectrum, ProbaDNA,Sum_prod_basis]= SCSA_transform(Y,h0,fs,gm)
+function [h,Ys,Nh,Nh00,Eigen_Spectrum, ProbaDNA,Sum_prod_basis]= SCSA_transform(Y,h0,fs,gm)
 
 [N M]=size(Y);
 stop=0;
 Eigen_Spectrum=zeros([N M]);
 parfor i=1:N
     y=Y(i,:);
-    [h1, yscsa,Nh0,Eigen_Spectrum0, psinnor]= SCSA1D_vector(y, fs,h0,gm);
+    [h1, yscsa,Nh_N,Nh0,Eigen_Spectrum0, psinnor]= SCSA1D_vector(y, fs,h0,gm);
 %     figure; plot(y,'r'); hold on ; plot(yscsa,'b'); hold off ; 
-    Nh(i)=Nh0;h(i)=h1;
+    Nh(i)=Nh_N;
+    Nh00(i)=Nh0;
+
+    h(i)=h1;
     Ys(i,:)=yscsa;
 %     Proba=psinnor.^2'
     Proba=normalize_matrix(1,(psinnor.^2)');
     Sum_prod_basis(i,:)= Eigen_Spectrum0'*psinnor';
     I=Eigen_Spectrum0*0+1;
     ProbaDNA(i,:)=I'*Proba;
-    Eigen_Spectrum00=Eigen_Spectrum0(1:Nh0)';
+    Eigen_Spectrum00=Eigen_Spectrum0(1:Nh_N)';
 %     Eigen_Spectrum(i,1:Nh0)=[Eigen_Spectrum00];
      Eigen_Spectrum(i,:)=Eigen_Spectrum00;
 
@@ -54,7 +57,7 @@ Eigen_Spectrum( :, all(~Eigen_Spectrum,1) ) = [];
 
 d=1;
 
-function [h, yscsa,Nh,Neg_lamda,psinnor]= SCSA1D_vector(y,fs,h,gm)
+function [h, yscsa,Nh,Nh0,Neg_lamda,psinnor]= SCSA1D_vector(y,fs,h,gm)
 
 Lcl = (1/(2*sqrt(pi)))*(gamma(gm+1)/gamma(gm+(3/2)));
 N=max(size(y));
@@ -120,6 +123,9 @@ end
  else
      yscsa = yscsa1;
  end
+ 
+ 
+ Nh0 = size(ind,1);  
   
 % lgnd=string(J(1:k))
 % figure;

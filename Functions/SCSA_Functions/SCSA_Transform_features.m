@@ -11,15 +11,19 @@ function [F_features, S_features, B_features, P_features,AF_features,SFP_feature
 fprintf('\n --> Generate SCSA based features\n ');
 
 %% Run the scsa
-[h, yscsaA,Nh,Neg_lamda,ProbaS, Sum_Basis]= SCSA_transform(features,h0,fs,gm);
+[h, yscsaA,Nh,Nh00,Neg_lamda,ProbaS, Sum_Basis]= SCSA_transform(features,h0,fs,gm);
 
-Nh_all=Nh';
+Nh_all=Nh00';
 SFP_features=Sum_Basis;
 F_features=[yscsaA];
 AF_features=[trapz(yscsaA')']/size(features,2);
 
 % Get the non-zero spectrum
 Idx=min_spectrum(Neg_lamda);
+
+Idx=8;
+Idx=size(Neg_lamda,2);
+
 S_features=[Neg_lamda(:,1:Idx)];% S_features=[Neg_lamda(:,1:max(Nh))];
 P_features=[ProbaS ];
 
@@ -49,8 +53,10 @@ if size(Neg_lamda,2)<=step
 
 else
     
+    cnt=1;
     for k=1:step:size(Neg_lamda,2)-step
-        INVK_features(:,k)=sum(Neg_lamda(:,k:k+step-1)'.^2)';
+        INVK_features(:,cnt)=sum(Neg_lamda(:,k:k+step-1)'.^2)';
+        cnt=cnt+1;
     end
 
 end

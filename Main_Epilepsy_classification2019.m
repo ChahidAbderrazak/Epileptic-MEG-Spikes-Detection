@@ -9,13 +9,13 @@
 %
 %% ###########################################################################
 warning('off');
-clear all;  close all ;format shortG;  addpath ./Functions ;Include_function ;%log_html_file
+% clear all;  close all ;format shortG;  addpath ./Functions ;Include_function ;%log_html_file
 global y h filename  root_folder 
 
 %% load  MEG data  
 %     Extracted_MEG_Samples
 %     Combine_patients_datasets
-    Load_saved_data
+%     Load_saved_data
 % noisy_file=Fuse_strings(unique(noisy_file));
 
 %% Cross Validation parameters

@@ -57,14 +57,14 @@ ytrue=Combine_TS(:,end);
 %% Compute the ROC curve
 [X,Y,T,AUC] = perfcurve(y_test ,score,1);
 % Plot the ROC curve.
-figure;
-plot(X,Y)
-xlabel('False positive rate') 
-ylabel('True positive rate')
-title('ROC for Classification by Logistic Regression')
-legend(strcat(feature_type(1:end-1), ', AUC=',num2str(AUC),' - LR'))
-set(gca,'fontsize',16)
-grid on
+% figure;
+% plot(X,Y)
+% xlabel('False Positive Rate (FPR)') 
+% ylabel('True Positive Rate (TPR)')
+% title('ROC')
+% legend(strcat(feature_type(1:end-1), {''},' AUC=',num2str(AUC),' - LR'))
+% set(gca,'fontsize',16)
+% grid on
 
 
 function [CompactSVMModel,accuracy0,sensitivity0,specificity0,precision0,gmean0,f1score0,AUC,y_test,yfit,score]= SVM_classifier(X_train, y_train, X_test, y_test)
@@ -78,14 +78,14 @@ CompactSVMModel = CVSVMModel.Trained{1}; % Extract trained, compact classifier
 score=scores(:,2);
 [X,Y,T,AUC] = perfcurve(y_test ,score,1);
 % Plot the ROC curve.
-figure;
-plot(X,Y)
-xlabel('False positive rate') 
-ylabel('True positive rate')
-title('ROC for Classification by SVM')
-legend(strcat(feature_type(1:end-1), ', AUC=',num2str(AUC),' - SVM'))
-set(gca,'fontsize',16)
-grid on
+% figure;
+% plot(X,Y)
+% xlabel('False Positive Rate (FPR)') 
+% ylabel('True Positive Rate (TPR)')
+% title('ROC')
+% legend(strcat(feature_type(1:end-1), {''},' AUC=',num2str(AUC),' - SVM'))
+% set(gca,'fontsize',16)
+% grid on
 
 function A=NO_T(B)
 [M,N]=size(B);
