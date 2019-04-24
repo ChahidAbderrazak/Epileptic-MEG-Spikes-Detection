@@ -1,4 +1,4 @@
- 
+   
 %% ###############   Epileptic Spikes Detection 2019  ############################
 % This script detects epileptic spikes bases onsignal processing methods
 
