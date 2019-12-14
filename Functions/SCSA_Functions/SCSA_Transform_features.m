@@ -6,12 +6,12 @@
 % SFP_features: sum of the product of the eigenvalues to the corresponding
 %               eigenfucntion (Suggested by M)
 
-function [F_features, S_features, B_features, P_features,AF_features,SFP_features,SK_features,INVK_features, Nh_all]=SCSA_Transform_features(features,y,h0,gm,fs)
+function [F_features, S_features, B_features, P_features,AF_features,SFP_features,SK_features,INVK_features, Nh_all, Eigen_Spectrum]=SCSA_Transform_features(features,y,h0,gm,fs)
 
 fprintf('\n --> Generate SCSA based features\n ');
 
 %% Run the scsa
-[h, yscsaA,Nh,Nh00,Neg_lamda,ProbaS, Sum_Basis]= SCSA_transform(features,h0,fs,gm);
+[h, yscsaA,Nh,Nh00,Neg_lamda,ProbaS, Sum_Basis,Eigen_Spectrum]= SCSA_transform(features,h0,fs,gm);
 
 Nh_all=Nh00';
 SFP_features=Sum_Basis;

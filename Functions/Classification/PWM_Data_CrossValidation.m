@@ -3,9 +3,9 @@
 % y  The Class
 % clf: The calssifier:{'nbayes','logisticRegression','SVM','','',''}
 % function [accuracy1,sz_fPWM]= Classify_LeaveOut_PWM(X,y,clf)
-function [sz_fPWM, Avg_Accuracy,Avg_sensitivity,Avg_specificity,Avg_precision,Avg_gmean,Avg_f1score,Avg_AUC]=PWM_Data_CrossValidation(X, y,CV_type, K,type_clf)
+function [sz_fPWM, Avg_Accuracy,Avg_sensitivity,Avg_specificity,Avg_precision,Avg_gmean,Avg_f1score,Avg_AUC,Mdl_op]=PWM_Data_CrossValidation(X, y,CV_type, K,type_clf)
 
-global Levels Level_intervals 
+global Levels Level_intervals  y_PatientID L 
 
 
 if strcmp(CV_type,'LOO')==1
@@ -30,7 +30,7 @@ else
 
 end
 Bi_classes=  unique(y);
-
+Acc_max=0;
 for num_fold = 1:C.NumTestSets
     clearvars  PWM_* XP Xn
     
@@ -67,6 +67,19 @@ for num_fold = 1:C.NumTestSets
 
         [Mdl,Accuracy(num_fold),sensitivity(num_fold),specificity(num_fold),precision(num_fold),gmean(num_fold),f1score(num_fold),AUC(num_fold),ytrue,yfit]=Classify_Data(type_clf, fPWM_train, y_train, fPWM_test, y_test);
       
+        %% best model
+        if Accuracy(num_fold)>Acc_max
+            Mdl_op.Mdl=Mdl;
+            Mdl_op.PWM_P=PWM_P;
+            Mdl_op.PWM_N=PWM_N;
+            Mdl_op.Level_intervals=Level_intervals;
+            Mdl_op.Levels=Levels;
+        end
+        
+ subjects_names=join(unique(y_PatientID),"");
+ path_python=strcat('./python/mat/PWM2/',subjects_names,'/',num2str(L));
+ if exist(path_python)~=7, mkdir(path_python); end
+ save(strcat(path_python,'/dataset_MEG',subjects_names,'L',num2str(L),'_fold',num2str(num_fold),'.mat'),'fPWM_train', 'y_train', 'fPWM_test', 'y_test','Accuracy')
     
 end
 

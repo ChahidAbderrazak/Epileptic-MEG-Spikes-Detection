@@ -49,7 +49,7 @@ Acc_op=0;
 for h=[0.0001  0.1 0.2 0.3  1 10 50 100 200 500]%0.3:0.1:0.8%[0.1:0.2:0.5 1 10 50 100 ]%[0.1:0.25:1 1.5:2:10 10:10:100 200:100:1000]% max(max(X))*0.01*[2 3 5 10 5 20]%[0.5:0.5:5] % [2:0.2:5]%1%2.13%
 
     %% Find the optimal combination of the features  SCSA  
-    [F_SCSA, S_SCSA, B_SCSA, P_SCSA,AF_SCSA,SFP_SCSA,SK_features,INVK_features,Nh_all]=SCSA_Transform_features(X,y,h,gm,fs);
+    [F_SCSA, S_SCSA, B_SCSA, P_SCSA,AF_SCSA,SFP_SCSA,SK_features,INVK_features,Nh_all, Eigen_Spectrum]=SCSA_Transform_features(X,y,h,gm,fs);
 
     % Save the SCSA features
     data_file=strcat(root_folder,'/SCSA_features',num2str(h),'.mat');

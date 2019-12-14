@@ -23,14 +23,15 @@
 % SC_h : The decomposed Matrix of the Schrödinger problem
 
 
-function [h,Ys,Nh,Nh00,Eigen_Spectrum, ProbaDNA,Sum_prod_basis]= SCSA_transform(Y,h0,fs,gm)
+function [h,Ys,Nh,Nh00,NegEigen_Spectrum, ProbaDNA,Sum_prod_basis,Eigen_Spectrum]= SCSA_transform(Y,h0,fs,gm)
 
 [N M]=size(Y);
 stop=0;
+NegEigen_Spectrum=zeros([N M]);
 Eigen_Spectrum=zeros([N M]);
-parfor i=1:N
+for i=1:N
     y=Y(i,:);
-    [h1, yscsa,Nh_N,Nh0,Eigen_Spectrum0, psinnor]= SCSA1D_vector(y, fs,h0,gm);
+    [h1, yscsa,Nh_N,Nh0,NegEigen_Spectrum0, psinnor,All_lamda]= SCSA1D_vector(y, fs,h0,gm);
 %     figure; plot(y,'r'); hold on ; plot(yscsa,'b'); hold off ; 
     Nh(i)=Nh_N;
     Nh00(i)=Nh0;
@@ -39,25 +40,26 @@ parfor i=1:N
     Ys(i,:)=yscsa;
 %     Proba=psinnor.^2'
     Proba=normalize_matrix(1,(psinnor.^2)');
-    Sum_prod_basis(i,:)= Eigen_Spectrum0'*psinnor';
-    I=Eigen_Spectrum0*0+1;
+    Sum_prod_basis(i,:)= NegEigen_Spectrum0'*psinnor';
+    I=NegEigen_Spectrum0*0+1;
     ProbaDNA(i,:)=I'*Proba;
-    Eigen_Spectrum00=Eigen_Spectrum0(1:Nh_N)';
-%     Eigen_Spectrum(i,1:Nh0)=[Eigen_Spectrum00];
-     Eigen_Spectrum(i,:)=Eigen_Spectrum00;
+    NegEigen_Spectrum00=NegEigen_Spectrum0(1:Nh_N)';
+%     NegEigen_Spectrum(i,1:Nh0)=[NegEigen_Spectrum00];
+     NegEigen_Spectrum(i,:)=NegEigen_Spectrum00;
+     Eigen_Spectrum(i,:)=All_lamda;
 
     
 end
 
 
-Eigen_Spectrum( :, all(~Eigen_Spectrum,1) ) = [];
+NegEigen_Spectrum( :, all(~NegEigen_Spectrum,1) ) = [];
 
 
 
 
 d=1;
 
-function [h, yscsa,Nh,Nh0,Neg_lamda,psinnor]= SCSA1D_vector(y,fs,h,gm)
+function [h, yscsa,Nh,Nh0,Neg_lamda,psinnor,All_lamda]= SCSA1D_vector(y,fs,h,gm)
 
 Lcl = (1/(2*sqrt(pi)))*(gamma(gm+1)/gamma(gm+(3/2)));
 N=max(size(y));
@@ -79,7 +81,7 @@ SC_h = -h*h*D-Y; % The Schrodinger operaor
 % = = = = = = Begin : The eigenvalues and eigenfunctions
 [psi,lamda] = eig(SC_h); % All eigenvalues and associated eigenfunction of the schrodinger operator
 % Choosing  eigenvalues
-All_lamda = diag(lamda);
+All_lamda = diag(lamda);All_lamda=All_lamda';
 ind = find(All_lamda<0);
 
 

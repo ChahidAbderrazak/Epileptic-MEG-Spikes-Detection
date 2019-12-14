@@ -13,6 +13,8 @@ switch type_clf
         warning(strcat('The chosen classifier:',type_clf,' is not available.'));
        
 end
+
+% accuracy
   
 
 

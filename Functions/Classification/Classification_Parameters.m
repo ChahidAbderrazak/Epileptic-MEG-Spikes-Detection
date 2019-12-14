@@ -16,34 +16,67 @@
 % EN_starplus=1;
 
 %% ###########################################################################
-%% For test purpose, use small data set by rndom sampling
-Nn=size(Xn,1);  Np=size(Xp,1);  Ndata=min(Nn,Np);
-X=[Xp(1:Ndata,:);Xn(1:Ndata,:)];
-y=[yp(1:Ndata,:);yn(1:Ndata,:) ];
 
+%% For test purpose, use small data set by rndom sampling
+FFT_specter='TimeSerie_';
+
+if strcmp(CV_type,'KFold')==1
+    if exist('Xn')==0
+        indp=find(y0==1); Xp=X0(indp,:); 
+        indn=find(y0==0); Xn=X0(indn,:); 
+    end
+
+    %% get balanced data for training
+    Nn=size(Xn,1);  Np=size(Xp,1);  yp=ones(Np,1); yn=0*ones(Nn,1);
+    Ndata=min(Nn,Np);
+    
+    X=[Xp(1:Ndata,:);Xn(1:Ndata,:)];
+    y=[yp(1:Ndata,:);yn(1:Ndata,:) ];
+    
+    
+    downSample=1;
+    s = RandStream('mlfg6331_64'); Rndm_idx=randsample(s,Nn,Nn,false);
+    Idx=1:Nn;
+    Idx_random=Idx(Rndm_idx(1:Ndata));
+            
+%     X=[Xp(1:Ndata,:);Xn(Idx_random,:)];
+%     y=[yp(1:Ndata,:);yn(Idx_random,:) ];
+
+end
+
+
+%% Applay FFT to the Data
+if EN_FFT==1
+    [X, f]=FFT_signals(X,fs);FFT_specter='FFT_';
+    fprintf(' --> Apply FFT transform to the time series datset \n ')
+end
 % X0=X;
 
-X=X*10^12;
+% %% get balanced data for training/Testing for Subject_LOOCV
+% Number_patient=unique(y_PatientID)
 
+
+% 
+% X=X*10^12;
+X=X/max(max(X));
 %% Normalization 
 if Normalization==1
-    X=Scale_down_to_unit(X);
-else
-    
+%     X=Scale_down_to_unit(X);
+    X=normalize(X,2);   
 end
 
  %% Random sampling the input  data
 %     [X,shuffle_index]=Shuffle_data(X);y=y(shuffle_index);
 
 %% Display
- Bi_Elctr(CHs)=1; Conf_Elctr=bi2de(Bi_Elctr);
+Bi_Elctr(CHs)=1; Conf_Elctr=bi2de(Bi_Elctr);
 Electrode_list=CHs;
 
 d_clf='--> Epeliptic seizure Classification  :' ;
 d_data1=string(strcat('- CV type:',{''},CV_type,{''},', K=',num2str(K),',  Dataset: ',noisy_file ,', Electrodes configuration: ',num2str(Conf_Elctr),', Used Electrodes=',num2str(Electrode_list) ));
 d_data2=string(strcat('- Sampling:  L=',num2str(L_max),', Frame Step=',num2str(Frame_Step),', Norm=',num2str(Normalization)));
-
-fprintf('%s \n %s \n %s \n\n',d_clf,d_data1,d_data2);
+d_data20=string(strcat('- Dataset: :  ',num2str(size(X,1)),' Samples. Each has   ',{' '},num2str(size(X,2)),' points;'));
+fprintf('%s \n %s \n %s \n\n',d_clf,d_data1,d_data2,d_data20);
 
 
 %   %% Splitting the data 80/20 (training/testing)  data
